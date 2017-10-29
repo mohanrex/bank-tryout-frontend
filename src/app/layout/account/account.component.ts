@@ -20,6 +20,9 @@ export class AccountComponent implements OnInit {
 
     constructor(private accountService: AccountService, private toasterService: ToasterService) { }
 
+    /**
+     * Creates account form
+     */
     private createForm() {
         this.accountForm = new FormGroup({
             name: new FormControl('', [Validators.required]),
@@ -28,12 +31,18 @@ export class AccountComponent implements OnInit {
         });
     }
 
+    /**
+     * Creates tax form
+     */
     private createTaxForm() {
         this.taxForm = new FormGroup({
             percentile: new FormControl(0.00, [Validators.required])
         });
     }
 
+    /**
+     * Creates withdrawal form
+     */
     private createWithDrawForm(id, name) {
         this.withDrawForm = new FormGroup({
             idx: new FormControl({value: id, disabled: true}, Validators.required),
@@ -43,25 +52,40 @@ export class AccountComponent implements OnInit {
         });
     }
     
+    /**
+     * Default initialization function
+     */
     ngOnInit() {
         this.goHome();
     }
 
+    /**
+     * Initializes create account form page
+     */
     initCreateAccount() {
         this.pageState = 20;
         this.createForm();
     }
 
+    /**
+     * Initializes tax form page
+     */
     initTaxAccount() {
         this.pageState = 30;
         this.createTaxForm();
     }
 
+    /**
+     * Initializes withdrawal form page
+     */
     initWithdraw(id, name) {
         this.pageState = 40;
         this.createWithDrawForm(id, name);
     }
 
+    /**
+     * Initializes home page functions
+     */
     goHome() {
         this.accountService.getAccounts().subscribe(data => this.accounts = data);
         this.accountService.getTotalBalance().subscribe(data => this.totalAccountBalance = data.sum);
@@ -69,6 +93,9 @@ export class AccountComponent implements OnInit {
         this.createForm();
     }
 
+    /**
+     * Create accounts in the backend
+     */
     createAccount(event) {
         if(!this.accountForm.invalid) {
             this.accountService.createAccount(
@@ -79,6 +106,10 @@ export class AccountComponent implements OnInit {
         }
     }
 
+    /**
+     * Taxation form submit function
+     * @param event 
+     */
     taxation(event) {
         if (this.taxForm.value.percentile == 0) {
             this.toasterService.pop('error', "Please input more than 0 percent");
@@ -91,6 +122,10 @@ export class AccountComponent implements OnInit {
         }
     }
 
+    /**
+     * Withdrawal form submit function
+     * @param event 
+     */
     withdrawal(event) {
         if(!this.withDrawForm.invalid) {
             this.accountService.withDraw(
@@ -101,21 +136,33 @@ export class AccountComponent implements OnInit {
         }
     }
 
+    /**
+     * Taxation form success function
+     */
     taxationSuccess() {
         this.goHome();
         this.toasterService.pop('success', 'Taxation done');
     }
 
+    /**
+     * Withdrawal form success function
+     */
     withDrawalSuccess() {
         this.goHome();
         this.toasterService.pop('success', "Withdrawal done.");
     }
 
+    /**
+     * Create account form success function
+     */
     accountCreated() {
         this.goHome();
         this.toasterService.pop('success', 'Account Added');
     }
 
+    /**
+     * Generate new secret key
+     */
     generateNewSecret() {
         this.accountForm.patchValue({'secret':Math.floor(1000 + Math.random() * 9000)});
     }

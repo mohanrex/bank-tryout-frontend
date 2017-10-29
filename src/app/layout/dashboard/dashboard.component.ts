@@ -18,10 +18,16 @@ export class DashboardComponent implements OnInit {
         
     }
 
+    /**
+     * Initialization function
+     */
     ngOnInit() {
         this.initializeComponent();
     }
 
+    /**
+     * Initialize all the components with its value from backend
+     */
     initializeComponent() {
         this.accountService.getAccountsCount().subscribe(data => this.accountCount = data);
         this.accountService.getTotalBalance().subscribe(data => this.convertRupee(data));
@@ -29,18 +35,34 @@ export class DashboardComponent implements OnInit {
         this.accountService.getHighestAccount().subscribe(data => this.convertHighestBalance(data));
     }
 
+    /**
+     * Converts ruppee to abbreviated amount
+     * @param data : dict of total balance
+     */
     convertRupee(data = {"sum":0.00}) {
         this.totalBalance = {"sum": this.abbreviateNumber(data.sum)};
     }
 
+    /**
+     * Formats lowest account balance
+     * @param data : list of lowest account balances
+     */
     convertLowestBalance(data = []) {
         this.lowestBalance = this.convertAccountBalance(data);
     }
 
+    /**
+     * Formats highest account balance
+     * @param data : list of highest account balances
+     */
     convertHighestBalance(data = []) {
         this.highestBalance = this.convertAccountBalance(data);
     }
 
+    /**
+     * Formats the accounts for the view
+     * @param data : List of account
+     */
     convertAccountBalance(data = []) {
         var accounts = "";
         if (data.length > 0) {
@@ -56,6 +78,10 @@ export class DashboardComponent implements OnInit {
         return {"account":accounts, "balance":balance}
     }
 
+    /**
+     * Converts ruppee with abbreaviated amount like 10K, 10M etc.
+     * @param value - Real value to be converted to abbreviated format
+     */
     abbreviateNumber(value: number) {
         if (value >= 1000000000) {
             return (value / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';

@@ -2,6 +2,7 @@
     <app-page-header [heading]="'Audit'" [icon]="'fa-search'"></app-page-header>
 
     <div class="row justify-content-center">
+        <!-- Filter account section -->
         <div class="col-lg-6">
             <div class="card mb-3">
                 <div class="card-header">
@@ -27,7 +28,7 @@
                             <th class="text-center">Balance</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody *ngIf="accounts">
                             <tr *ngFor="let row of accounts">
                                 <td>{{row.values.name}}</td>
                                 <td class="text-right"><i class="fa fa-rupee"></i> {{row.values.balance  | number : '1.2-2'}}</td>
@@ -37,6 +38,7 @@
                 </div>
             </div>
         </div>
+        <!-- List of lowest account balances section -->
         <div class="col-lg-6">
             <div class="card mb-3">
                 <div class="card-header">

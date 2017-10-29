@@ -17,6 +17,9 @@ export class LoginComponent implements OnInit {
     constructor(public router: Router) {
     }
 
+    /**
+     * Creates the login form and initializes it
+     */
     private createForm() {
         this.loginForm = new FormGroup({
             email: new FormControl('', [Validators.required, Validators.email]),
@@ -24,11 +27,18 @@ export class LoginComponent implements OnInit {
         });
     }
 
+    /**
+     * NG initialization routine
+     */
     ngOnInit() {
         this.createForm();
         this.formValid = true;
     }
 
+    /**
+     * Validate the login details and if valid log in else show error
+     * @param event 
+     */
     doLogin(event) {
         if(this.loginForm.value.email == "manager@trukish.com" && this.loginForm.value.password == "test1234") {
             this.formValid = true;
@@ -37,10 +47,5 @@ export class LoginComponent implements OnInit {
         } else {
             this.formValid = false;
         }
-    }
-
-    onLoggedin(name, password) {
-        console.log(name);
-        
     }
 }

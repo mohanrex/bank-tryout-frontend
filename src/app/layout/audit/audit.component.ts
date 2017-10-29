@@ -17,25 +17,37 @@ export class AuditComponent implements OnInit {
 
     constructor(private accountService: AccountService, private toasterService: ToasterService) { }
 
+    /**
+     * Creates search form
+     */
     private createForm() {
         this.searchForm = new FormGroup({
             amount: new FormControl(0.00, [Validators.required])
         });
     }
     
+    /**
+     * Default initialization function
+     */
     ngOnInit() {
         this.goHome();
     }
 
+    /**
+     * Reusable page initialization function
+     */
     goHome() {
-        this.accountService.getAccounts().subscribe(data => this.accounts = data);
-        this.accountService.getLowestAccount().subscribe(data => this.lowestAccount = data);
         this.createForm();
         this.searchForm.valueChanges.subscribe(() => {
             this.searchAccount();
         });
+        this.accountService.getAccounts().subscribe(data => this.accounts = data);
+        this.accountService.getLowestAccount().subscribe(data => this.lowestAccount = data);
     }
 
+    /**
+     * Filters account based on the form value
+     */
     searchAccount() {
         if(!this.searchForm.invalid) {
             this.accountService.searchAccount(
