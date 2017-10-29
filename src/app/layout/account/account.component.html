@@ -1,0 +1,136 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Accounts'" [icon]="'fa-book'"></app-page-header>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <div class="card mb-3" *ngIf="pageState==10">
+                <div class="card-header">
+                    Account Details
+                    <div class="float-right">
+                        <button (click)='initCreateAccount()' class="btn btn-rounded btn-success float-right">
+                            <i class="fa fa-plus"></i>
+                            Create Account
+                        </button>
+                        <button (click)='initTaxAccount()' class="btn btn-rounded btn-primary float-right">
+                            <i class="fa fa-minus"></i>
+                            Taxations
+                        </button>
+                    </div>
+                </div>
+                <div class="card-block table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Account Name</th>
+                            <th class="text-center">Balance</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr> 
+                                <th>Total</th>
+                                <th class="text-right"><i class="fa fa-rupee"></i> {{totalAccountBalance  | number : '1.2-2'}}</th> 
+                                <th></th>
+                            </tr>
+                            <tr *ngFor="let row of accounts">
+                                <td>{{row.values.name}}</td>
+                                <td class="text-right"><i class="fa fa-rupee"></i> {{row.values.balance  | number : '1.2-2'}}</td> 
+                                <td class="text-right"><button (click)='initWithdraw(row.idx, row.values.name)' class="btn btn-info btn-sm" [disabled]="row.values.balance <= 0" ><i class="fa fa-money"></i> Withdraw</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card mb-3" *ngIf="pageState==20">
+                <div class="card-header">
+                    Create Account
+                    <button class="btn btn-danger float-right" (click)='goHome()'> Cancel </button>
+                </div>
+                <div class="card-block">
+                    <form [formGroup]="accountForm" (ngSubmit)="createAccount($event)">
+                        <div class="form-content">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" formControlName="name" class="form-control input-underline input-lg" id="" placeholder="Name" required>
+                            </div>
+        
+                            <div class="form-group">
+                                <label>Secret</label>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <input type="number" formControlName="secret" class="form-control input-underline input-lg" id="" placeholder="Secret">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-primary" type="button" (click)='generateNewSecret()'>Generate</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Balance</label>
+                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                    <div class="input-group-addon"><i class="fa fa-rupee"></i> </div>
+                                    <input type="number" step="0.01" formControlName="balance" class="form-control input-underline input-lg" id="" placeholder="Balance">
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-success float-right" type="submit" [disabled]="accountForm.invalid"> Create </button>
+                    </form>
+                </div>
+            </div>
+            <div class="card mb-3" *ngIf="pageState==30">
+                <div class="card-header">
+                    Account Taxation
+                    <button class="btn btn-danger float-right" (click)='goHome()'> Cancel </button>
+                </div>
+                <div class="card-block">
+                    <form [formGroup]="taxForm" (ngSubmit)="taxation($event)">
+                        <div class="form-content">
+                            <div class="form-group">
+                                <label>Tax Percentage</label>
+                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                    <input type="number" min="0.01" step="0.01" formControlName="percentile" class="form-control input-underline input-lg" id="" placeholder="Tax Percentage">
+                                    <div class="input-group-addon">% </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-success float-right" type="submit" [disabled]="taxForm.invalid"> Submit </button>
+                    </form>
+                </div>
+            </div>
+            <div class="card mb-3" *ngIf="pageState==40">
+                <div class="card-header">
+                    Account Withdrawal
+                    <button class="btn btn-danger float-right" (click)='goHome()'> Cancel </button>
+                </div>
+                <div class="card-block">
+                    <form [formGroup]="withDrawForm" (ngSubmit)="withdrawal($event)">
+                            <div class="form-content">
+                                <div class="form-group">
+                                    <label>Account ID</label>
+                                    <input type="text" formControlName="idx" class="form-control input-underline input-lg" id="" placeholder="Account ID" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" formControlName="name" class="form-control input-underline input-lg" id="" placeholder="Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Secret</label>
+                                    <input type="password" maxlength="4" formControlName="password" class="form-control input-underline input-lg" id="" placeholder="Secret">    
+                                </div>
+    
+                                <div class="form-group">
+                                    <label>Withdrawal Amount</label>
+                                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                        <div class="input-group-addon"><i class="fa fa-rupee"></i> </div>
+                                        <input type="number" step="0.01" formControlName="amount" class="form-control input-underline input-lg" id="" placeholder="Withdrawal Amount">
+                                    </div>
+                                </div>
+                            </div>
+                        <button class="btn btn-success float-right" type="submit" [disabled]="withDrawForm.invalid"> Submit </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

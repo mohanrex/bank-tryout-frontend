@@ -1,0 +1,31 @@
+<div class="login-page" [@routerTransition]>
+    <div class="row">
+        <div class="col-md-4 push-md-4">
+            <img src="assets/images/logo.png" width="150px" class="user-avatar" />
+            <h1>Bank Tryout</h1>
+            <form [formGroup]="loginForm" (ngSubmit)="doLogin($event)">
+                <div class="form-content">
+                    <div class="form-group">
+                        <input type="email" formControlName="email" class="form-control input-underline input-lg" id="" placeholder="Email" required>
+                        <div *ngIf="loginForm.controls['email'].errors && !loginForm.controls['email'].pristine" class="error-msg">
+                            <div [hidden]="!loginForm.controls['email'].errors.required">Email is required.</div>
+                            <div [hidden]="!loginForm.controls['email'].errors.email || loginForm.controls['email'].errors.required">Email is invalid.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" formControlName="password" class="form-control input-underline input-lg" id="" placeholder="Password">
+                        <div *ngIf="loginForm.controls['password'].errors && !loginForm.controls['password'].pristine" class="error-msg">
+                            <div [hidden]="!loginForm.controls['password'].errors.required">Password is required.</div>
+                            <div [hidden]="!formValid">Username/password is wrong.</div>
+                        </div>
+                        <div *ngIf="!formValid" class="error-msg">
+                            <div>Username/password is wrong.</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn rounded-btn" type="submit" [disabled]="loginForm.invalid"> Log in </button>
+            </form>
+        </div>
+    </div>
+</div>

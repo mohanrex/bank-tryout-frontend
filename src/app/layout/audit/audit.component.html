@@ -1,0 +1,64 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Audit'" [icon]="'fa-search'"></app-page-header>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Audit Account
+                    <div class="float-right">
+                        <form [formGroup]="searchForm">
+                            <div class="form-content">
+                                <div class="form-group">
+                                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                        <div class="input-group-addon"><i class="fa fa-rupee"></i> </div>
+                                        <input type="number" step="0.01" formControlName="amount" class="form-control input-underline input-lg" id="" placeholder="Balance">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-block table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Account Name</th>
+                            <th class="text-center">Balance</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of accounts">
+                                <td>{{row.values.name}}</td>
+                                <td class="text-right"><i class="fa fa-rupee"></i> {{row.values.balance  | number : '1.2-2'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Lowest Account Balance
+                </div>
+                <div class="card-block table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Account Name</th>
+                            <th class="text-center">Balance</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of lowestAccount">
+                                <td>{{row.name}}</td>
+                                <td class="text-right"><i class="fa fa-rupee"></i> {{row.balance  | number : '1.2-2'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
